@@ -1,0 +1,43 @@
+:root {
+  /* COLORS */
+  --bg-primary: #0a0a0f;
+  --bg-surface: #111118;
+  --bg-elevated: #1a1a24;
+  --border-subtle: #2a2a38;
+
+  --accent-primary: #6c63ff;
+  --accent-secondary: #00f0ff;
+  --gradient-cta: linear-gradient(135deg, #6c63ff, #00f0ff);
+
+  --status-success: #22c55e;
+  --status-warning: #f59e0b;
+  --status-error: #ef4444;
+
+  --text-primary: #f0f0ff;
+  --text-secondary: #9090aa;
+  --text-muted: #5a5a72;
+
+  /* TYPOGRAPHY */
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* SPACING */
+  --space-unit: 4px;
+
+  /* BORDER RADIUS */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* SHADOWS */
+  --shadow-card-glow: 0 0 40px rgba(108, 99, 255, 0.12);
+  --shadow-accent-glow: 0 0 24px rgba(0, 240, 255, 0.2);
+
+  /* MOTION */
+  --ease-default: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-micro: 150ms;
+  --duration-standard: 300ms;
+  --duration-emphasis: 500ms;
+}

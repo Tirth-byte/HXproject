@@ -1,0 +1,124 @@
+// This file is the source-of-truth for the Prisma Database Schema.
+// Run: npx prisma generate && npx prisma db push
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  PARTICIPANT
+}
+
+enum EventStatus {
+  UPCOMING
+  LIVE
+  ENDED
+}
+
+enum SponsorTier {
+  PLATINUM
+  GOLD
+  SILVER
+  BRONZE
+}
+
+// ─────────────────────────────────────────
+// MODELS
+// ─────────────────────────────────────────
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  password    String   // bcrypt hashed — NEVER store plaintext
+  role        Role     @default(PARTICIPANT)
+  skills      String[] // PostgreSQL text array
+  githubUrl   String?
+  avatar      String?
+  bio         String?
+  college     String?
+  linkedin    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  registrations EventParticipant[]
+  submissions   Submission[]
+}
+
+model Event {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  description  String
+  bannerUrl    String?
+  theme        String[]
+  prizePool    Int
+  maxTeamSize  Int           @default(4)
+  startDate    DateTime
+  endDate      DateTime
+  status       EventStatus   @default(UPCOMING)
+  createdBy    String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  // Relations
+  participants EventParticipant[]
+  submissions  Submission[]
+  sponsors     EventSponsor[]
+}
+
+model EventParticipant {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId   String
+  teamName  String?
+  joinedAt  DateTime @default(now())
+
+  @@unique([userId, eventId])
+}
+
+model Submission {
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId     String
+  projectName String
+  demoUrl     String?
+  repoUrl     String?
+  description String
+  score       Float?
+  rank        Int?
+  submittedAt DateTime @default(now())
+}
+
+model Sponsor {
+  id      String        @id @default(cuid())
+  name    String
+  logoUrl String?
+  website String?
+  tier    SponsorTier   @default(BRONZE)
+  events  EventSponsor[]
+}
+
+model EventSponsor {
+  event     Event   @relation(fields: [eventId], references: [id])
+  eventId   String
+  sponsor   Sponsor @relation(fields: [sponsorId], references: [id])
+  sponsorId String
+
+  @@id([eventId, sponsorId])
+}

@@ -1,0 +1,269 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@theme {
+  /* COLORS */
+  --color-primary: var(--accent-primary);
+  --color-secondary: var(--accent-secondary);
+  --color-background: var(--bg-primary);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-border-subtle: var(--border-subtle);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-success: var(--status-success);
+  --color-warning: var(--status-warning);
+  --color-error: var(--status-error);
+
+  /* TYPE */
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  /* TYPE SCALE */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+
+  /* SPACING (Scale 4px base unit) */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-24: 96px;
+  --spacing-32: 128px;
+
+  /* RADIUS */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+
+  /* SHADOWS */
+  --shadow-card-glow: var(--shadow-card-glow);
+  --shadow-accent-glow: var(--shadow-accent-glow);
+
+  /* ANIMATIONS / MOTION */
+  --ease-in-out: var(--ease-default);
+  --animate-fade-up: fade-up var(--duration-standard) var(--ease-default);
+  --animate-shimmer: shimmer 1.5s infinite linear;
+  --animate-shake: shake 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  --animate-wobble: wobble 0.3s ease-in-out alternate;
+  --animate-toast-progress: toastProgress 4s linear forwards;
+  --animate-pulse-live: pulseLive 1.5s infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes shake {
+    10%,
+    90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    20%,
+    80% {
+      transform: translate3d(2px, 0, 0);
+    }
+    30%,
+    50%,
+    70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+    40%,
+    60% {
+      transform: translate3d(4px, 0, 0);
+    }
+  }
+
+  @keyframes wobble {
+    0% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-10deg);
+    }
+    50% {
+      transform: rotate(10deg);
+    }
+    75% {
+      transform: rotate(-5deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  @keyframes toastProgress {
+    0% {
+      width: 100%;
+    }
+    100% {
+      width: 0%;
+    }
+  }
+
+  @keyframes pulseLive {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+/* Nav Underline Utilities */
+@layer utilities {
+  .nav-link-hover {
+    position: relative;
+  }
+  .nav-link-hover::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--status-success);
+    transition: width 0.2s ease-out;
+  }
+  .nav-link-hover:hover::after {
+    width: 100%;
+  }
+
+  /* Shimmer utility for skeletons */
+  .bg-shimmer {
+    background: linear-gradient(90deg, #111118 25%, #1a1a24 50%, #111118 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
+}
+
+/* BASE RULES */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  /* UTILITY - CTA Gradient */
+  .bg-cta {
+    background: var(--gradient-cta);
+  }
+
+  .text-cta {
+    background: var(--gradient-cta);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* COMPONENT DEFAULTS */
+@layer components {
+  .section-padding {
+    padding-top: var(--spacing-24);
+    padding-bottom: var(--spacing-24);
+  }
+
+  @media (max-width: 768px) {
+    .section-padding {
+      padding-top: var(--spacing-16);
+      padding-bottom: var(--spacing-16);
+    }
+  }
+
+  /* Button System implemented as components */
+  .btn-primary {
+    @apply h-12 px-8 rounded-md font-medium inline-flex items-center justify-center transition-all;
+    background: var(--gradient-cta);
+    color: #ffffff;
+    border-radius: var(--radius-md);
+  }
+
+  .btn-secondary {
+    @apply h-12 px-8 rounded-md font-medium border border-primary text-primary inline-flex items-center justify-center transition-all bg-transparent hover:bg-primary/5;
+    border-radius: var(--radius-md);
+  }
+
+  .btn-ghost {
+    @apply h-12 px-8 font-medium text-text-muted inline-flex items-center justify-center transition-all hover:border-border-subtle hover:text-text-primary border border-transparent bg-transparent rounded-md;
+    border-radius: var(--radius-md);
+  }
+
+  .btn-danger {
+    @apply h-12 px-8 rounded-md font-medium bg-error text-white inline-flex items-center justify-center transition-all hover:opacity-90;
+    border-radius: var(--radius-md);
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
